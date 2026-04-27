@@ -35,6 +35,35 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ];
         }
 
+        if ($user->role === 'tutor') {
+            $data = [
+                'child' => [
+                    'name' => 'Carlos Garcia',
+                    'grade' => '10mo Grado',
+                    'average' => 8.5,
+                    'alerts' => [
+                        ['id' => 1, 'type' => 'warning', 'message' => 'Inasistencia en Física - 25/04'],
+                        ['id' => 2, 'type' => 'danger', 'message' => 'Bajo rendimiento en Matemáticas'],
+                    ]
+                ]
+            ];
+        }
+
+        if ($user->role === 'student') {
+            $data = [
+                'academic_record' => [
+                    'status' => 'Regular',
+                    'attendance' => '92%',
+                    'subjects' => [
+                        ['id' => 1, 'name' => 'Matemáticas', 'grade' => 7.5, 'status' => 'Aprobado'],
+                        ['id' => 2, 'name' => 'Física', 'grade' => 6.0, 'status' => 'En Riesgo'],
+                        ['id' => 3, 'name' => 'Programación', 'grade' => 9.5, 'status' => 'Aprobado'],
+                        ['id' => 4, 'name' => 'Literatura', 'grade' => 8.0, 'status' => 'Aprobado'],
+                    ]
+                ]
+            ];
+        }
+
         return Inertia::render('Dashboard', $data);
     })->name('dashboard');
 });

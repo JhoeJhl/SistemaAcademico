@@ -13,7 +13,27 @@ defineProps<{
         name: string;
         students_count: number;
         schedule: string;
-    }>
+    }>,
+    child?: {
+        name: string;
+        grade: string;
+        average: number;
+        alerts: Array<{
+            id: number;
+            type: 'warning' | 'danger' | 'info';
+            message: string;
+        }>
+    },
+    academic_record?: {
+        status: string;
+        attendance: string;
+        subjects: Array<{
+            id: number;
+            name: string;
+            grade: number;
+            status: string;
+        }>
+    }
 }>();
 </script>
 
@@ -24,7 +44,11 @@ defineProps<{
         <!-- Sidebar lateral -->
         <aside class="w-64 bg-indigo-900 text-white flex flex-col">
             <div class="p-6 text-xl font-bold border-b border-indigo-800">
-                Panel {{ auth.user.role === 'admin' ? 'Académico' : 'Docente' }}
+                Panel {{ 
+                    auth.user.role === 'admin' ? 'Académico' : 
+                    auth.user.role === 'teacher' ? 'Docente' : 
+                    auth.user.role === 'tutor' ? 'Padre/Tutor' : 'Estudiante'
+                }}
             </div>
             <nav class="flex-1 p-4 space-y-2">
                 <Link href="/dashboard" class="block p-3 rounded bg-indigo-800">Inicio</Link>
@@ -40,6 +64,18 @@ defineProps<{
                     <Link href="#" class="block p-3 rounded hover:bg-indigo-800 transition">Mis Materias</Link>
                     <Link href="#" class="block p-3 rounded hover:bg-indigo-800 transition">Horarios</Link>
                     <Link href="#" class="block p-3 rounded hover:bg-indigo-800 transition">Calificaciones</Link>
+                </template>
+
+                <template v-if="auth.user.role === 'tutor'">
+                    <Link href="#" class="block p-3 rounded hover:bg-indigo-800 transition">Boletín de Notas</Link>
+                    <Link href="#" class="block p-3 rounded hover:bg-indigo-800 transition">Asistencia</Link>
+                    <Link href="#" class="block p-3 rounded hover:bg-indigo-800 transition">Comunicados</Link>
+                </template>
+
+                <template v-if="auth.user.role === 'student'">
+                    <Link href="#" class="block p-3 rounded hover:bg-indigo-800 transition">Mis Calificaciones</Link>
+                    <Link href="#" class="block p-3 rounded hover:bg-indigo-800 transition">Mi Horario</Link>
+                    <Link href="#" class="block p-3 rounded hover:bg-indigo-800 transition">Material de Apoyo</Link>
                 </template>
             </nav>
             <div class="p-4 border-t border-indigo-800">
@@ -59,7 +95,10 @@ defineProps<{
                     <p class="text-slate-500">Sistema de Gestión Académica</p>
                 </div>
                 <span class="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm font-semibold uppercase">
-                    {{ auth.user.role }}
+                    {{ 
+                        auth.user.role === 'tutor' ? 'Tutor ADRE' : 
+                        auth.user.role === 'student' ? 'Estudiante' : auth.user.role 
+                    }}
                 </span>
             </header>
 
@@ -104,6 +143,109 @@ defineProps<{
                                 </button>
                             </div>
                         </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- VISTA TUTOR -->
+            <div v-if="auth.user.role === 'tutor' && child" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Información del Hijo -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                        <h3 class="text-slate-500 text-sm font-medium mb-1">Nombre del Estudiante</h3>
+                        <p class="text-2xl font-bold text-slate-900">{{ child.name }}</p>
+                        <p class="text-indigo-600 font-medium">{{ child.grade }}</p>
+                    </div>
+
+                    <!-- Promedio General -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-center">
+                        <h3 class="text-slate-500 text-sm font-medium mb-1">Promedio General</h3>
+                        <div class="flex items-end gap-2">
+                            <p class="text-4xl font-black text-indigo-700">{{ child.average }}</p>
+                            <p class="text-slate-400 mb-1">/ 10.0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alertas -->
+                <section class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <span class="text-amber-500">⚠️</span> Alertas del Estudiante
+                    </h2>
+                    <div class="space-y-3">
+                        <div v-for="alert in child.alerts" :key="alert.id" 
+                            :class="[
+                                'p-4 rounded-lg border flex justify-between items-center',
+                                alert.type === 'danger' ? 'bg-red-50 border-red-100 text-red-800' : 'bg-amber-50 border-amber-100 text-amber-800'
+                            ]"
+                        >
+                            <span class="font-medium text-balance">{{ alert.message }}</span>
+                            <button class="text-xs underline font-bold uppercase tracking-wider">Ver detalle</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- VISTA ESTUDIANTE -->
+            <div v-if="auth.user.role === 'student' && academic_record" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Estado Académico -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                        <h3 class="text-slate-500 text-sm font-medium">Estado Académico</h3>
+                        <p class="text-2xl font-bold text-green-600 mt-2">{{ academic_record.status }}</p>
+                    </div>
+                    <!-- Asistencia -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                        <h3 class="text-slate-500 text-sm font-medium">Asistencia Total</h3>
+                        <p class="text-2xl font-bold text-indigo-600 mt-2">{{ academic_record.attendance }}</p>
+                    </div>
+                    <!-- Mensaje Promocional/Informativo -->
+                    <div class="bg-indigo-600 p-6 rounded-xl shadow-sm text-white">
+                        <h3 class="opacity-80 text-sm font-medium">Próximo Examen</h3>
+                        <p class="text-xl font-bold mt-2">Física - 30 Abr</p>
+                    </div>
+                </div>
+
+                <!-- Tabla de Materias y Notas -->
+                <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="p-6 border-b border-slate-100">
+                        <h2 class="text-lg font-bold text-slate-800">Mis Materias y Calificaciones</h2>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50">
+                                    <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Materia</th>
+                                    <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Nota Final</th>
+                                    <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Estado</th>
+                                    <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr v-for="subject in academic_record.subjects" :key="subject.id" class="hover:bg-slate-50 transition-colors">
+                                    <td class="p-4 font-medium text-slate-900">{{ subject.name }}</td>
+                                    <td class="p-4">
+                                        <span :class="[
+                                            'text-lg font-bold',
+                                            subject.grade >= 7 ? 'text-indigo-600' : 'text-red-500'
+                                        ]">
+                                            {{ subject.grade.toFixed(1) }}
+                                        </span>
+                                    </td>
+                                    <td class="p-4">
+                                        <span :class="[
+                                            'px-2 py-1 rounded text-xs font-bold uppercase',
+                                            subject.status === 'Aprobado' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
+                                        ]">
+                                            {{ subject.status }}
+                                        </span>
+                                    </td>
+                                    <td class="p-4">
+                                        <button class="text-indigo-600 hover:text-indigo-800 text-sm font-bold">Ver Detalles</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </section>
             </div>

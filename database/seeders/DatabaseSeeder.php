@@ -28,5 +28,19 @@ class DatabaseSeeder extends Seeder
             'password' => \Illuminate\Support\Facades\Hash::make('docente123'),
             'role' => 'teacher',
         ]);
+
+        \App\Models\User::factory()->create([
+            'name' => 'Sra. Maria Garcia',
+            'email' => 'tutor@sistema.com',
+            'password' => \Illuminate\Support\Facades\Hash::make('tutor123'),
+            'role' => 'tutor',
+        ]);
+
+        \App\Models\User::factory()->create([
+            'name' => 'Carlos Garcia',
+            'email' => 'estudiante@sistema.com',
+            'password' => \Illuminate\Support\Facades\Hash::make('estudiante123'),
+            'role' => 'student',
+        ]);
     }
 }
