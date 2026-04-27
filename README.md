@@ -69,6 +69,5 @@ Un sistema integral de control academico diseñado para optimizar los procesos a
     php artisan serve
     ```
 
-## 📄 Licencia
 
 
