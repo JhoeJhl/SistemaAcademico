@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\User::factory()->create([
             'name' => 'Prof. Juan Pérez',
-            'email' => 'juan@sistema.com',
+            'email' => 'docente@sistema.com',
             'password' => \Illuminate\Support\Facades\Hash::make('docente123'),
             'role' => 'teacher',
         ]);
