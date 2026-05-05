@@ -112,7 +112,7 @@ const submit = () => {
                             <label for="password" class="block text-sm font-semibold text-slate-700">
                                 Contraseña
                             </label>
-                            <Link href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500 transition-colors">
+                            <Link href="/forgot-password" class="text-sm font-medium text-indigo-600 hover:text-indigo-500 transition-colors">
                                 ¿Olvidaste tu contraseña?
                             </Link>
                         </div>
@@ -179,7 +179,7 @@ const submit = () => {
                 <div class="mt-8 pt-6 border-t border-slate-200">
                     <p class="text-center text-sm text-slate-600">
                         ¿Aún no tienes credenciales? 
-                        <Link href="#" class="font-semibold text-indigo-600 hover:text-indigo-500 transition-colors">
+                        <Link href="/contact-support" class="font-semibold text-indigo-600 hover:text-indigo-500 transition-colors">
                             Contactar a control escolar
                         </Link>
                     </p>

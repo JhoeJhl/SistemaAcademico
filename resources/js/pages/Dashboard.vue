@@ -86,30 +86,30 @@ defineProps<{
                 
                 <!-- Menú Director -->
                 <template v-if="auth.user.role === 'admin'">
-                    <Link href="#" class="block p-3 rounded hover:bg-slate-800 transition">Rendimiento Institucional</Link>
-                    <Link href="#" class="block p-3 rounded hover:bg-slate-800 transition">Gestión de Personal</Link>
-                    <Link href="#" class="block p-3 rounded hover:bg-slate-800 transition">Reportes de Asambleas</Link>
+                    <Link href="/admin/rendimiento" class="block p-3 rounded hover:bg-slate-800 transition">Rendimiento Institucional</Link>
+                    <Link href="/admin/personal" class="block p-3 rounded hover:bg-slate-800 transition">Gestión de Personal</Link>
+                    <Link href="/admin/asambleas" class="block p-3 rounded hover:bg-slate-800 transition">Reportes de Asambleas</Link>
                 </template>
 
                 <!-- Menú Docente -->
                 <template v-if="auth.user.role === 'teacher'">
-                    <Link href="#" class="block p-3 rounded hover:bg-slate-800 transition">Mis Materias y Notas</Link>
-                    <Link href="#" class="block p-3 rounded hover:bg-slate-800 transition text-amber-400">Asamblea de Docentes</Link>
-                    <Link href="#" class="block p-3 rounded hover:bg-slate-800 transition">Desempeño de Clases</Link>
+                    <Link href="/teacher/materias" class="block p-3 rounded hover:bg-slate-800 transition">Mis Materias y Notas</Link>
+                    <Link href="/teacher/asamblea" class="block p-3 rounded hover:bg-slate-800 transition text-amber-400">Asamblea de Docentes</Link>
+                    <Link href="/teacher/desempeno" class="block p-3 rounded hover:bg-slate-800 transition">Desempeño de Clases</Link>
                 </template>
 
                 <!-- Menú Tutor -->
                 <template v-if="auth.user.role === 'tutor'">
-                    <Link href="#" class="block p-3 rounded hover:bg-slate-800 transition">Seguimiento Académico</Link>
-                    <Link href="#" class="block p-3 rounded hover:bg-slate-800 transition">Llamadas de Atención</Link>
-                    <Link href="#" class="block p-3 rounded hover:bg-slate-800 transition">Reuniones Programadas</Link>
+                    <Link href="/tutor/seguimiento" class="block p-3 rounded hover:bg-slate-800 transition">Seguimiento Académico</Link>
+                    <Link href="/tutor/llamadas" class="block p-3 rounded hover:bg-slate-800 transition">Llamadas de Atención</Link>
+                    <Link href="/tutor/reuniones" class="block p-3 rounded hover:bg-slate-800 transition">Reuniones Programadas</Link>
                 </template>
 
                 <!-- Menú Estudiante -->
                 <template v-if="auth.user.role === 'student'">
-                    <Link href="#" class="block p-3 rounded hover:bg-slate-800 transition">Mis Calificaciones</Link>
-                    <Link href="#" class="block p-3 rounded hover:bg-slate-800 transition">Mi Horario</Link>
-                    <Link href="#" class="block p-3 rounded hover:bg-slate-800 transition text-emerald-400">Evaluar Docentes</Link>
+                    <Link href="/student/calificaciones" class="block p-3 rounded hover:bg-slate-800 transition">Mis Calificaciones</Link>
+                    <Link href="/student/horario" class="block p-3 rounded hover:bg-slate-800 transition">Mi Horario</Link>
+                    <Link href="/student/evaluacion" class="block p-3 rounded hover:bg-slate-800 transition text-emerald-400">Evaluar Docentes</Link>
                 </template>
             </nav>
             <div class="p-4 border-t border-slate-800">

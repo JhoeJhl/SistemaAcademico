@@ -19,9 +19,21 @@ Route::post('/logout', [LoginController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
 
+// Rutas en construcción (Acceso público/Invitado)
+Route::middleware('guest')->group(function () {
+    Route::get('/forgot-password', function () {
+        return Inertia::render('UnderConstruction');
+    })->name('password.request');
+
+    Route::get('/contact-support', function () {
+        return Inertia::render('UnderConstruction');
+    })->name('contact.support');
+});
+
 // Ejemplo de ruta protegida (Dashboard)
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
+        // ... (existing logic)
         $user = auth()->user();
         $data = [];
 
@@ -66,4 +78,26 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         return Inertia::render('Dashboard', $data);
     })->name('dashboard');
+
+    // Rutas del menú en construcción
+    $underConstructionRoutes = [
+        '/admin/rendimiento',
+        '/admin/personal',
+        '/admin/asambleas',
+        '/teacher/materias',
+        '/teacher/asamblea',
+        '/teacher/desempeno',
+        '/tutor/seguimiento',
+        '/tutor/llamadas',
+        '/tutor/reuniones',
+        '/student/calificaciones',
+        '/student/horario',
+        '/student/evaluacion',
+    ];
+
+    foreach ($underConstructionRoutes as $route) {
+        Route::get($route, function () {
+            return Inertia::render('UnderConstruction');
+        });
+    }
 });
